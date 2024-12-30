@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form">
+            <h2>Register</h2>
+            <input type="text" id="register-username" placeholder="Username (max 32 chars)">
+            <input type="email" id="register-email" placeholder="Email">
+            <input type="password" id="register-password" placeholder="Password (8-32 chars)">
+            <button onclick="registerUser()">Register</button>
+        </div>
+    </div>
+
+    <script>
+        async function registerUser() {
+            const username = document.getElementById("register-username").value.trim();
+            const email = document.getElementById("register-email").value.trim();
+            const password = document.getElementById("register-password").value;
+
+            if (!username || !email || !password) {
+                alert("All fields are required!");
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:5000/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert("Registration successful!");
+                // Redirect to login page if necessary
+            } else {
+                alert(`Registration failed: ${result.message}`);
+            }
+        }
+    </script>
+</body>
+</html>

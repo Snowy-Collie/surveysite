@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="form">
+            <h2>Reset Password</h2>
+            <input type="text" id="reset-username" placeholder="Username">
+            <input type="email" id="reset-email" placeholder="Email">
+            <input type="password" id="new-password" placeholder="New Password (8-32 chars)">
+            <button onclick="resetPassword()">Reset Password</button>
+        </div>
+    </div>
+
+    <script>
+        async function resetPassword() {
+            const username = document.getElementById("reset-username").value.trim();
+            const email = document.getElementById("reset-email").value.trim();
+            const newPassword = document.getElementById("new-password").value;
+
+            if (!username || !email || !newPassword) {
+                alert("All fields are required!");
+                return;
+            }
+
+            if (newPassword.length < 8 || newPassword.length > 32) {
+                alert("Password must be 8-32 characters.");
+                return;
+            }
+
+            const response = await fetch('http://127.0.0.1:5000/reset-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, new_password: newPassword })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert("Password reset successful!");
+                // Redirect to login page
+            } else {
+                alert(`Password reset failed: ${result.message}`);
+            }
+        }
+    </script>
+</body>
+</html>
