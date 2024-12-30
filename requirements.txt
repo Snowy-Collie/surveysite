@@ -1,0 +1,4 @@
+Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+Flask-Bcrypt==1.0.1
+Flask-CORS==3.1.1
