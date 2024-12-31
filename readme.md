@@ -41,13 +41,13 @@ This is an open-source survey system built using Python, allowing users to creat
     python ./generate_secret_key.py
     ```
 
-3. Run the application.
+4. Run the application.
 
     ```bash
     python ./app.py
     ```
 
-4. The system and website will be running locally on `http://127.0.0.1:5000`.
+5. The system and website will be running locally on `http://127.0.0.1:5000`.
 
 ## Usage
 
