@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 import random
 import string
+from converter import parse_questionnaire
 
 app = Flask(__name__)
 CORS(app)
@@ -33,15 +34,15 @@ def generate_unique_id(length=16):
 
 @app.route('/login.html')
 def login():
-    return render_template('login.html')
+    return render_template('./static/login.html')
 
 @app.route('/register.html')
 def register():
-    return render_template('register.html')
+    return render_template('./static/register.html')
 
 @app.route('/reset.html')
 def reset():
-    return render_template('reset.html')
+    return render_template('./static/reset.html')
 
 
 

@@ -1,0 +1,133 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafc;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Header Styles */
+header {
+    background-color: #3aa0ff;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+}
+
+header img#logo {
+    width: 60px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+header h1 {
+    font-size: 2em;
+    margin: 10px 0 5px;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.2em;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #333;
+    color: white;
+    overflow: hidden;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+nav ul li a:hover {
+    background-color: #3aa0ff;
+}
+
+/* Form Section */
+section {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    margin-top: 0;
+    color: #3aa0ff;
+}
+
+section form p, section form label {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+section form input[type="text"],
+section form input[type="email"],
+section form input[type="number"],
+section form select,
+section form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+}
+
+section form textarea {
+    resize: vertical;
+}
+
+section form input[type="radio"],
+section form input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+section form button {
+    background-color: #3aa0ff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+section form button:hover {
+    background-color: #3aa0ff;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    font-size: 0.9em;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
