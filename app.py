@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_cors import CORS
@@ -10,7 +10,8 @@ app = Flask(__name__)
 CORS(app)
 app = Flask(__name__, template_folder='.')
 
-# 配置数据库
+# 配置 Flask 和数据库
+app.config['SECRET_KEY'] = 'your_secret_key_here'  # 替换为更复杂的密钥
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
@@ -88,7 +89,11 @@ def login_user():
     if not user or not bcrypt.check_password_hash(user.password, password):
         return jsonify({"message": "Invalid email or password"}), 401
 
-    return jsonify({"message": "Login successful"}), 200
+    # 保存登录状态
+    session['user_id'] = user.id
+    session['username'] = user.username
+
+    return jsonify({"message": "Login successful", "user_id": user.id}), 200
 
 # 重置密码
 @app.route('/reset-password', methods=['POST'])
@@ -111,6 +116,29 @@ def reset_password():
     user.password = hashed_password
     db.session.commit()
     return jsonify({"message": "Password reset successful"}), 200
+
+# 获取用户信息
+@app.route('/profile', methods=['GET'])
+def user_profile():
+    if 'user_id' not in session:
+        return jsonify({"message": "Not logged in"}), 401
+
+    user_id = session['user_id']
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify({
+        "user_id": user.id,
+        "username": user.username,
+        "email": user.email
+    }), 200
+
+# 用户登出
+@app.route('/logout', methods=['POST'])
+def logout_user():
+    session.clear()  # 清除所有会话数据
+    return jsonify({"message": "Logout successful"}), 200
 
 # 主程序入口
 if __name__ == '__main__':
