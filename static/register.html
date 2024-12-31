@@ -37,7 +37,7 @@
             const result = await response.json();
             if (response.ok) {
                 alert("Registration successful!");
-                // Redirect to login page if necessary
+                window.location.replace("http://127.0.0.1:5000/login.html");
             } else {
                 alert(`Registration failed: ${result.message}`);
             }
