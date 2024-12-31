@@ -35,6 +35,12 @@ This is an open-source survey system built using Python, allowing users to creat
     pip install -r requirements.txt
     ```
 
+2. Generate a secret key for app.py and replace the output key into app.py.
+
+    ```bash
+    python ./generate_secret_key.py
+    ```
+
 3. Run the application.
 
     ```bash

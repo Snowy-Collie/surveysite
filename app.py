@@ -11,7 +11,7 @@ CORS(app)
 app = Flask(__name__, template_folder='.')
 
 # 配置 Flask 和数据库
-app.config['SECRET_KEY'] = 'your_secret_key_here'  # 替换为更复杂的密钥
+app.config['SECRET_KEY'] = '9330e1be305eb2b3533ee3995d1b5f6b097bdac5099a5c14c3527397ba7c34bd'  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
