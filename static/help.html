@@ -1,0 +1,136 @@
+<h2><strong>PolarForm Questionnaire Authoring Guide</strong></h2>
+<p>PolarForm is a questionnaire generation tool that uses a simple markup syntax to create dynamic HTML surveys. This guide explains the supported syntax and provides examples to help you design your questionnaires.</p>
+
+<hr>
+
+<h3><strong>1. Structure and Basics</strong></h3>
+<ol>
+    <li><strong>Headings</strong><br>
+        Start each section with <code>[#]</code> for a heading.<br>
+        <strong>Example:</strong>
+        <pre>
+[#]Personal Information
+        </pre>
+    </li>
+    <li><strong>Question Markers</strong><br>
+        Use <code>[*]</code> for required questions and <code>[/]</code> for optional ones.<br>
+        <strong>Example:</strong>
+        <pre>
+[*][~=2,50] Please enter your name
+[/][@] Provide your backup email
+        </pre>
+    </li>
+    <li><strong>Section Separation</strong><br>
+        Use <code>---</code> to separate each question or heading.
+    </li>
+</ol>
+
+<hr>
+
+<h3><strong>2. Question Types</strong></h3>
+<h4>(1) Single-Choice and Multiple-Choice Questions</h4>
+<p>Marker: <code>[&=x]</code>, where <code>x</code> specifies the number of choices allowed (1 for single choice, more than 1 for multiple choices).<br>
+List the options line by line after the question, ending with <code>---</code>.</p>
+<strong>Example:</strong>
+<pre>
+[*][&=1] Select your gender
+Male
+Female
+---
+[*][&=2] Choose two favorite fruits
+Apple
+Banana
+Orange
+Grape
+---
+</pre>
+
+<h4>(2) Short Answer Questions</h4>
+<p>Marker: <code>[~=x,y]</code>, where <code>x</code> is the minimum character count, and <code>y</code> is the maximum.</p>
+<strong>Example:</strong>
+<pre>
+[*][~=2,50] Enter your name (2–50 characters)
+</pre>
+
+<h4>(3) Long Answer Questions</h4>
+<p>Marker: <code>[_=x,y]</code>, where <code>x</code> is the minimum character count, and <code>y</code> is the maximum.</p>
+<strong>Example:</strong>
+<pre>
+[/][_=0,1000] Provide your feedback (up to 1000 characters)
+</pre>
+
+<h4>(4) Date Questions</h4>
+<p>Marker: <code>[%=x]</code>, where <code>x</code> can be:</p>
+<ul>
+    <li><code>md</code>: Month and day selection.</li>
+    <li><code>y</code>: Year input.</li>
+</ul>
+<strong>Example:</strong>
+<pre>
+[*][%=md] Select your birth date (month and day)
+[*][%=y] Enter your birth year
+</pre>
+
+<h4>(5) Email Questions</h4>
+<p>Marker: <code>[@]</code> to request an email address, with built-in format validation.</p>
+<strong>Example:</strong>
+<pre>
+[*][@] Enter your email address
+[/][@] Enter a backup email address
+</pre>
+
+<hr>
+
+<h3><strong>3. Formatting Options</strong></h3>
+<ol>
+    <li><strong>HTML Support</strong><br>
+        Basic HTML tags (e.g., <code>&lt;b&gt;</code>, <code>&lt;strong&gt;</code>) are allowed in descriptions.<br>
+        <strong>Example:</strong>
+        <pre>
+[*][&=2] Choose <strong>two</strong> favorite fruits
+        </pre>
+    </li>
+</ol>
+
+<hr>
+
+<h3><strong>4. Sample Questionnaire</strong></h3>
+<pre>
+[#]Multiple-Choice Section
+---
+[*][&=1] Choose one of the following options
+Option 1
+Option 2
+Option 3
+---
+[*][&=2] Select two of the following options
+Option 1
+Option 2
+Option 3
+Option 4
+---
+
+[#] Short Answer Section
+---
+[*][~=2,50] Please enter your name
+[/][_=0,1000] Share your thoughts (up to 1000 characters)
+---
+
+[#] Date and Email Section
+---
+[*][%=md] Select your birth date (month and day)
+[*][%=y] Enter your birth year
+[*][@] Enter your email address
+</pre>
+
+<hr>
+
+<h3><strong>5. Key Notes</strong></h3>
+<ol>
+    <li><strong>Question Order</strong>: Write questions sequentially; the tool will auto-number them.</li>
+    <li><strong>Option List End Marker</strong>: For multiple-choice and single-choice questions and other questions, always end the option list or question with <code>---</code>.</li>
+    <li><strong>Character Limit Validation</strong>: Ensure that in <code>[x,y]</code>, <code>x</code> and <code>y</code> are both provided, and <code>x</code> is less than <code>y</code> to avoid errors.</li>
+    <li><strong>Consistent Encoding</strong>: Each marker line must start with <code>[ ]</code>, or it will be treated as plain text.</li>
+</ol>
+
+<p>Following these rules, you can efficiently create a variety of questionnaires tailored to your needs!</p>

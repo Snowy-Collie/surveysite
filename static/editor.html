@@ -3,25 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor</title>
+    <title>PolarForm Editor</title>
     <link rel="stylesheet" href="./editor_sytles.css">
 </head>
 <body>
-    <div id="buttons">
-        <button onclick="showModal('single-multi')">Single-Choice and Multiple-Choice Questions</button>
-        <button onclick="showModal('short-answer')">Short Answer Questions</button>
-        <button onclick="showModal('long-answer')">Long Answer Questions</button>
-        <button onclick="showModal('date')">Date Questions</button>
-        <button onclick="showModal('email')">Email Questions</button>
-    </div>
-    <textarea id="output" placeholder="Your generated question code will appear here..."></textarea>
+    <header>
+        <img src="./logo.png" alt="ACS Studio Logo" id="logo">
+        <h1>PolarForm Editor</h1>
+        <p>Discover Data with Polar Precision</p>
+    </header>
 
-    <!-- Modal Structure -->
-    <div id="modal" class="modal">
-        <div id="modal-content"></div>
-        <button onclick="closeModal()">Cancel</button>
-    </div>
+    <nav>
+        <ul>
+            <li><a href="https://acsstudio.site/">Home</a></li>
+            <li><a href="https://acsstudio.site/avp/">AVP</a></li>
+        </ul>
+    </nav>
 
+    <section>
+        <div id="buttons">
+            <button onclick="showModal('single-multi')">Single-Choice and Multiple-Choice Questions</button>
+            <button onclick="showModal('short-answer')">Short Answer Questions</button>
+            <button onclick="showModal('long-answer')">Long Answer Questions</button>
+            <button onclick="showModal('date')">Date Questions</button>
+            <button onclick="showModal('email')">Email Questions</button>
+            <button onclick="showHelp()">Help</button>
+            <button onclick="saveContent()">Save</button>
+        </div>
+        <textarea id="output" placeholder="Your generated question code will appear here..."></textarea>
+
+        <!-- Modal Structure -->
+        <div id="modal" class="modal">
+            <div id="modal-content"></div>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2024 ACS Studio - Air Maple Studio. All rights reserved.</p>
+    </footer>
     <script>
         const output = document.getElementById('output');
         const modal = document.getElementById('modal');
@@ -135,6 +155,29 @@
 
         function closeModal() {
             modal.classList.remove('active');
+        }
+
+        function saveContent() {
+            const content = output.value;
+            console.log("Saved Content:", content); // Replace this with actual save logic
+        }
+
+        function showHelp() {
+            fetch('./help.html')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch help content: ${response.statusText}`);
+                    }
+                    return response.text();
+                })
+                .then(htmlContent => {
+                    modalContent.innerHTML = htmlContent;
+                })
+                .catch(error => {
+                    console.error('Error loading help content:', error);
+                    modalContent.innerHTML = '<p>Unable to load help content. Please try again later.</p>';
+                });
+            modal.classList.add('active');
         }
     </script>
 </body>
