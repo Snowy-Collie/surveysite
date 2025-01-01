@@ -165,7 +165,7 @@ def parse_questionnaire(input_text):
         </head>
         <body>
             <header>
-                <img src="../logo.png" alt="ACS Studio Logo" id="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="ACS Studio Logo" id="logo">
                 <h1>PolarForm - By ACS Studio</h1>
                 <p>Discover Data with Polar Precision</p>
             </header>

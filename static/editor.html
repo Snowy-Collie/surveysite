@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor</title>
+    <link rel="stylesheet" href="./editor_sytles.css">
+</head>
+<body>
+    <div id="buttons">
+        <button onclick="showModal('single-multi')">Single-Choice and Multiple-Choice Questions</button>
+        <button onclick="showModal('short-answer')">Short Answer Questions</button>
+        <button onclick="showModal('long-answer')">Long Answer Questions</button>
+        <button onclick="showModal('date')">Date Questions</button>
+        <button onclick="showModal('email')">Email Questions</button>
+    </div>
+    <textarea id="output" placeholder="Your generated question code will appear here..."></textarea>
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+        <div id="modal-content"></div>
+        <button onclick="closeModal()">Cancel</button>
+    </div>
+
+    <script>
+        const output = document.getElementById('output');
+        const modal = document.getElementById('modal');
+        const modalContent = document.getElementById('modal-content');
+
+        function showModal(type) {
+            modalContent.innerHTML = '';
+
+            const requiredLabel = document.createElement('label');
+            requiredLabel.textContent = 'Is this question required?';
+            const requiredSelect = document.createElement('select');
+            const requiredOption1 = document.createElement('option');
+            requiredOption1.value = '*';
+            requiredOption1.textContent = 'Required';
+            const requiredOption2 = document.createElement('option');
+            requiredOption2.value = '/';
+            requiredOption2.textContent = 'Optional';
+            requiredSelect.appendChild(requiredOption1);
+            requiredSelect.appendChild(requiredOption2);
+            modalContent.appendChild(requiredLabel);
+            modalContent.appendChild(requiredSelect);
+            modalContent.appendChild(document.createElement('br'));
+
+            if (type === 'single-multi') {
+                const optionLabel = document.createElement('label');
+                optionLabel.textContent = 'Number of options:';
+                const optionInput = document.createElement('input');
+                optionInput.type = 'number';
+                optionInput.min = 1;
+                modalContent.appendChild(optionLabel);
+                modalContent.appendChild(optionInput);
+                modalContent.appendChild(document.createElement('br'));
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Insert';
+                submitButton.onclick = () => {
+                    const required = requiredSelect.value;
+                    const options = optionInput.value;
+                    output.value += `[${required}][&=${options}]
+
+---\n`;
+                    closeModal();
+                };
+                modalContent.appendChild(submitButton);
+            } else if (type === 'short-answer' || type === 'long-answer') {
+                const minLabel = document.createElement('label');
+                minLabel.textContent = 'Minimum characters:';
+                const minInput = document.createElement('input');
+                minInput.type = 'number';
+                minInput.min = 0;
+                modalContent.appendChild(minLabel);
+                modalContent.appendChild(minInput);
+                modalContent.appendChild(document.createElement('br'));
+
+                const maxLabel = document.createElement('label');
+                maxLabel.textContent = 'Maximum characters:';
+                const maxInput = document.createElement('input');
+                maxInput.type = 'number';
+                maxInput.min = 1;
+                modalContent.appendChild(maxLabel);
+                modalContent.appendChild(maxInput);
+                modalContent.appendChild(document.createElement('br'));
+
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Insert';
+                submitButton.onclick = () => {
+                    const required = requiredSelect.value;
+                    const min = minInput.value;
+                    const max = maxInput.value;
+                    const prefix = type === 'short-answer' ? '[~=' : '[_=';
+                    output.value += `[${required}]${prefix}${min},${max}]\n---\n`;
+                    closeModal();
+                };
+                modalContent.appendChild(submitButton);
+            } else if (type === 'date') {
+                const dateLabel = document.createElement('label');
+                dateLabel.textContent = 'Date format:';
+                const dateSelect = document.createElement('select');
+                const dateOption1 = document.createElement('option');
+                dateOption1.value = 'y';
+                dateOption1.textContent = 'Year';
+                const dateOption2 = document.createElement('option');
+                dateOption2.value = 'md';
+                dateOption2.textContent = 'Month/Day';
+                dateSelect.appendChild(dateOption1);
+                dateSelect.appendChild(dateOption2);
+                modalContent.appendChild(dateLabel);
+                modalContent.appendChild(dateSelect);
+                modalContent.appendChild(document.createElement('br'));
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Insert';
+                submitButton.onclick = () => {
+                    const required = requiredSelect.value;
+                    const dateType = dateSelect.value;
+                    output.value += `[${required}][%=${dateType}]\n---\n`;
+                    closeModal();
+                };
+                modalContent.appendChild(submitButton);
+            } else if (type === 'email') {
+                const submitButton = document.createElement('button');
+                submitButton.textContent = 'Insert';
+                submitButton.onclick = () => {
+                    const required = requiredSelect.value;
+                    output.value += `[${required}][@]\n---\n`;
+                    closeModal();
+                };
+                modalContent.appendChild(submitButton);
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
