@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- 可选，添加样式 -->
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ username }}</h1>
+    </header>
+
+    <section>
+        <h2>Your Questionnaires</h2>
+        <ul>
+            {% for questionnaire in questionnaires %}
+            <li>
+                <strong>{{ questionnaire.title }}</strong>
+                <a href="/edit/{{ questionnaire.id }}">Edit</a>
+                <a href="/result/{{ questionnaire.id }}">Results</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <footer>
+        <button onclick="location.href='/create'">Create New Questionnaire</button>
+    </footer>
+</body>
+</html>

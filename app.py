@@ -23,6 +23,10 @@ class User(db.Model):
     username = db.Column(db.String(32), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
+class Questionnaire(db.Model):
+    id = db.Column(db.String(16), primary_key=True)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    content = db.Column(db.Text, nullable=True)
 
 # 数据库初始化
 def create_tables():
@@ -145,3 +149,96 @@ if __name__ == '__main__':
     with app.app_context():
         create_tables()
     app.run(debug=True)
+
+# 用户主页
+@app.route('/profile', methods=['GET'])
+def profile():
+    if 'user_id' not in session:
+        return render_template('./static/login.html')  # 未登录跳转到登录页面
+
+    user_id = session['user_id']
+    user = User.query.get(user_id)
+    if not user:
+        session.clear()
+        return render_template('./static/login.html')  # 用户不存在，清除会话并跳转到登录
+
+    questionnaires = Questionnaire.query.filter_by(author_id=user_id).all()
+    return render_template('profile.html', username=user.username, questionnaires=questionnaires)
+
+# 检查问卷
+@app.route('/check', methods=['POST'])
+def check_questionnaire():
+    data = request.get_json()
+    content = data.get('content')
+
+    if not content:
+        return jsonify({"message": "Content is required"}), 400
+
+    result = parse_questionnaire(content)
+    return jsonify({"valid": result[0], "details": result}), 200
+
+# 创建问卷
+@app.route('/create', methods=['POST'])
+def create_questionnaire():
+    if 'user_id' not in session:
+        return jsonify({"message": "Not logged in"}), 401
+
+    user_id = session['user_id']
+    questionnaire_id = generate_unique_id()
+    while Questionnaire.query.filter_by(id=questionnaire_id).first():
+        questionnaire_id = generate_unique_id()
+
+    new_questionnaire = Questionnaire(id=questionnaire_id, author_id=user_id)
+    db.session.add(new_questionnaire)
+    db.session.commit()
+
+    return jsonify({"message": "Questionnaire created", "questionnaire_id": questionnaire_id}), 201
+
+# 保存问卷
+@app.route('/save', methods=['POST'])
+def save_questionnaire():
+    if 'user_id' not in session:
+        return jsonify({"message": "Not logged in"}), 401
+
+    data = request.get_json()
+    questionnaire_id = data.get('id')
+    content = data.get('content')
+
+    if not questionnaire_id or not content:
+        return jsonify({"message": "ID and content are required"}), 400
+
+    questionnaire = Questionnaire.query.filter_by(id=questionnaire_id, author_id=session['user_id']).first()
+    if not questionnaire:
+        return jsonify({"message": "Questionnaire not found or unauthorized"}), 404
+
+    questionnaire.content = content
+    db.session.commit()
+
+    return jsonify({"message": "Questionnaire saved successfully"}), 200
+
+# 打开问卷（回答）
+@app.route('/open/<string:questionnaire_id>', methods=['GET'])
+def open_questionnaire(questionnaire_id):
+    questionnaire = Questionnaire.query.filter_by(id=questionnaire_id).first()
+    if not questionnaire:
+        return jsonify({"message": "Questionnaire not found"}), 404
+
+    content = questionnaire.content
+    if not content:
+        return jsonify({"message": "No content found"}), 404
+
+    parsed_result = parse_questionnaire(content)
+    html_content = parsed_result[1] if len(parsed_result) > 1 else ""
+    return render_template('questionnaire.html', content=html_content)
+
+# 编辑问卷
+@app.route('/edit/<string:questionnaire_id>', methods=['GET'])
+def edit_questionnaire(questionnaire_id):
+    if 'user_id' not in session:
+        return jsonify({"message": "Not logged in"}), 401
+
+    questionnaire = Questionnaire.query.filter_by(id=questionnaire_id, author_id=session['user_id']).first()
+    if not questionnaire:
+        return jsonify({"message": "Questionnaire not found or unauthorized"}), 404
+
+    return render_template('editor.html', content=questionnaire.content)

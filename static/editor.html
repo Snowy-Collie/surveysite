@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PolarForm Editor</title>
-    <link rel="stylesheet" href="./editor_sytles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='editor_styles.css') }}">
 </head>
 <body>
     <header>
-        <img src="./logo.png" alt="ACS Studio Logo" id="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="ACS Studio Logo" id="logo">
         <h1>PolarForm Editor</h1>
         <p>Discover Data with Polar Precision</p>
     </header>
@@ -30,7 +30,7 @@
             <button onclick="showHelp()">Help</button>
             <button onclick="saveContent()">Save</button>
         </div>
-        <textarea id="output" placeholder="Your generated question code will appear here..."></textarea>
+        <textarea id="output" placeholder="Your generated question code will appear here...">{{ content }}</textarea>
 
         <!-- Modal Structure -->
         <div id="modal" class="modal">
@@ -163,7 +163,7 @@
         }
 
         function showHelp() {
-            fetch('./help.html')
+            fetch("{{ url_for('static', filename='help.html') }}")
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Failed to fetch help content: ${response.statusText}`);
