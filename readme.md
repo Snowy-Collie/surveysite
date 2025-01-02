@@ -1,6 +1,10 @@
-# Survey System
+# PolarForm
 
 This is an open-source survey system built using Python, allowing users to create accounts, design and publish surveys, and complete surveys. The project is currently in progress and is being continuously improved.
+
+<p align="center">
+    <img src="./static/logo.png" alt="PolarForm" style="width: 150px; height: 150px;">
+</p>
 
 ## Features
 
