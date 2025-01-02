@@ -19,13 +19,13 @@ bcrypt = Bcrypt(app)
 
 # 数据库模型
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(16), primary_key=True)  # Change Integer to String
     username = db.Column(db.String(32), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=False)
 class Questionnaire(db.Model):
     id = db.Column(db.String(16), primary_key=True)
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author_id = db.Column(db.String(16), db.ForeignKey('user.id'), nullable=False)  # Change Integer to String
     content = db.Column(db.Text, nullable=True)
 
 # 数据库初始化
@@ -121,22 +121,22 @@ def reset_password():
     db.session.commit()
     return jsonify({"message": "Password reset successful"}), 200
 
-# 获取用户信息
-@app.route('/profile', methods=['GET'])
-def user_profile():
-    if 'user_id' not in session:
-        return jsonify({"message": "Not logged in"}), 401
+# # 获取用户信息
+# @app.route('/profile', methods=['GET'])
+# def user_profile():
+#     if 'user_id' not in session:
+#         return jsonify({"message": "Not logged in"}), 401
 
-    user_id = session['user_id']
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({"message": "User not found"}), 404
+#     user_id = session['user_id']
+#     user = User.query.get(user_id)
+#     if not user:
+#         return jsonify({"message": "User not found"}), 404
 
-    return jsonify({
-        "user_id": user.id,
-        "username": user.username,
-        "email": user.email
-    }), 200
+#     return jsonify({
+#         "user_id": user.id,
+#         "username": user.username,
+#         "email": user.email
+#     }), 200
 
 # 用户登出
 @app.route('/logout', methods=['POST'])
@@ -144,14 +144,8 @@ def logout_user():
     session.clear()  # 清除所有会话数据
     return jsonify({"message": "Logout successful"}), 200
 
-# 主程序入口
-if __name__ == '__main__':
-    with app.app_context():
-        create_tables()
-    app.run(debug=True)
-
 # 用户主页
-@app.route('/profile', methods=['GET'])
+@app.route('/profile', methods=['GET']) # , methods=['GET']
 def profile():
     if 'user_id' not in session:
         return render_template('./static/login.html')  # 未登录跳转到登录页面
@@ -163,7 +157,7 @@ def profile():
         return render_template('./static/login.html')  # 用户不存在，清除会话并跳转到登录
 
     questionnaires = Questionnaire.query.filter_by(author_id=user_id).all()
-    return render_template('profile.html', username=user.username, questionnaires=questionnaires)
+    return render_template('./static/profile.html', username=user.username, questionnaires=questionnaires)
 
 # 检查问卷
 @app.route('/check', methods=['POST'])
@@ -242,3 +236,9 @@ def edit_questionnaire(questionnaire_id):
         return jsonify({"message": "Questionnaire not found or unauthorized"}), 404
 
     return render_template('editor.html', content=questionnaire.content)
+
+# 主程序入口
+if __name__ == '__main__':
+    with app.app_context():
+        create_tables()
+    app.run(debug=True)

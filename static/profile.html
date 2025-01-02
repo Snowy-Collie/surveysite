@@ -4,15 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> <!-- 可选，添加样式 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='editor_styles.css') }}"> 
 </head>
 <body>
     <header>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="ACS Studio Logo" id="logo">
         <h1>Welcome, {{ username }}</h1>
+        <p>Discover Data with Polar Precision</p>
     </header>
-
+    <nav>
+        <ul>
+            <li><a href="https://acsstudio.site/">Home</a></li>
+            <li><a href="https://acsstudio.site/avp/">AVP</a></li>
+        </ul>
+    </nav>
     <section>
         <h2>Your Questionnaires</h2>
+        <button id="createButton">Create New Questionnaire</button>
         <ul>
             {% for questionnaire in questionnaires %}
             <li>
@@ -25,7 +33,35 @@
     </section>
 
     <footer>
-        <button onclick="location.href='/create'">Create New Questionnaire</button>
+        <p>© 2024 ACS Studio - Air Maple Studio. All rights reserved.</p>
     </footer>
+    <script>
+    document.getElementById('createButton').addEventListener('click', function() {
+        fetch('/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (response.status === 201) {
+                // Successfully created, redirect with questionnaire ID
+                window.location.href = `/questionnaire/${data.questionnaire_id}`;
+            } else if (response.status === 401) {
+                // User not logged in
+                alert('You need to be logged in to create a questionnaire.');
+            } else {
+                // Other errors
+                alert(data.message || 'Failed to create a new questionnaire.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An unexpected error occurred.');
+        });
+    });
+
+    </script>
 </body>
 </html>
