@@ -6,6 +6,24 @@ This is an open-source survey system built using Python, allowing users to creat
     <img src="./static/logo.png" alt="PolarForm" style="width: 150px; height: 150px;">
 </p>
 
+<p align="center">
+<a href="https://github.com/Snowy-Collie/Survey-System/blob/main/LICENSE" target="_blank">
+<img src="https://img.shields.io/github/license/Snowy-Collie/Survey-System?style=flat-square" alt="licence" />
+</a>
+<a href="https://github.com/Snowy-Collie/Survey-System/fork" target="_blank">
+<img src="https://img.shields.io/github/forks/Snowy-Collie/Survey-System?style=flat-square" alt="forks"/>
+</a>
+<a href="https://github.com/Snowy-Collie/Survey-System/stargazers" target="_blank">
+<img src="https://img.shields.io/github/stars/Snowy-Collie/Survey-System?style=flat-square" alt="stars"/>
+</a>
+<a href="https://github.com/Snowy-Collie/Survey-System/issues" target="_blank">
+<img src="https://img.shields.io/github/issues/Snowy-Collie/Survey-System?style=flat-square" alt="issues"/>
+</a>
+<a href="https://github.com/Snowy-Collie/Survey-System/pulls" target="_blank">
+<img src="https://img.shields.io/github/issues-pr/Snowy-Collie/Survey-System?style=flat-square" alt="pull-requests"/>
+</a>
+</p>
+
 ## Features
 
 - User Registration and Login
